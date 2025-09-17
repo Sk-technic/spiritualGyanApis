@@ -32,7 +32,7 @@ router.post('/send', mailLimiter, async (req, res, next) => {
   }
 });
 
-router.get('health',(req,res)=>{
+router.get('/health',(req,res)=>{
 res.status(200).json({
     message:"ok api is running"
 })
