@@ -2,13 +2,7 @@ const express = require('express');
 const router = express.Router();
 const { sendMail } = require('../service/mailer.service.js');
 const { mailLimiter } = require('../middlewares/rateLimiter');
-
-// Simple validation helper
-const validateMailPayload = (body) => {
-  const { to, subject, text, html } = body || {};
-  if (!to || !subject || (!text && !html)) return false;
-  return true;
-};
+require("dotenv").config(); // must come first
 
 /**
  * POST /mail/send
@@ -16,23 +10,27 @@ const validateMailPayload = (body) => {
  */
 router.post('/send', mailLimiter, async (req, res, next) => {
   try {
-    if (!validateMailPayload(req.body)) {
-      return res.status(400).json({ success: false, message: 'Invalid payload. Required: to, subject, text or html' });
+    const { from, subject, text, html } = req.body;
+
+    if (!subject || (!text && !html)) {
+      return res.status(400).json({
+        success: false,
+        message: 'Invalid payload. Required: subject, and text or html'
+      });
     }
 
-    const { to, subject, text, html } = req.body;
+    const info = await sendMail({ from, subject, text, html });
+    console.log("response------:", info);
 
-    const info = await sendMail({
-      to,
-      subject,
-      text,
-      html
+    return res.status(200).json({
+      success: true,
+      message: 'Email sent successfully',
+      info
     });
-
-    return res.status(200).json({ success: true, message: 'Email queued/sent', info });
   } catch (err) {
     next(err);
   }
 });
+
 
 module.exports = router;

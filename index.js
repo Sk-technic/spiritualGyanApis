@@ -9,13 +9,19 @@ const mailRoutes = require('./src/routes/mail.js');
 const { globalLimiter } = require('./src/middlewares/rateLimiter');
 const notFound = require('./src/middlewares/notfound');
 const errorHandler = require('./src/middlewares/errorHandler');
-
+// 2️⃣ Debug environment variables
+console.log("Loaded ENV:", {
+  host: process.env.SMTP_HOST,
+  port: process.env.SMTP_PORT,
+  user: process.env.SMTP_USER ? "✔️ set" : "❌ missing",
+  pass: process.env.SMTP_PASS ? "✔️ set" : "❌ missing",
+});
 const app = express();
 
 // Security & parsing middlewares
 app.use(helmet());
 app.use(cors({
-  origin: true,            // adjust to specific origin or list in production
+  origin: "https://spiritualgyan.info",            // adjust to specific origin or list in production
   credentials: true
 }));
 app.use(morgan('combined'));
