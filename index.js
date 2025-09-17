@@ -28,6 +28,7 @@ app.use(morgan('combined'));
 app.use(express.json({ limit: '10kb' })); // small JSON limit to reduce attack surface
 app.use(express.urlencoded({ extended: true, limit: '10kb' }));
 app.use(cookieParser());
+app.set('trust proxy', 1);
 
 // Global rate limit for all requests (helps prevent crash on floods)
 app.use(globalLimiter);
