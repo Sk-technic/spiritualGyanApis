@@ -8,7 +8,7 @@ require("dotenv").config(); // must come first
  * POST /mail/send
  * body: { to: string, subject: string, text?: string, html?: string }
  */
-router.post('/send', mailLimiter, async (req, res, next) => {
+router.post('/send', async (req, res, next) => {
   try {
     const { from, subject, text, html } = req.body;
 
