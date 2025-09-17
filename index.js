@@ -21,7 +21,7 @@ const app = express();
 // Security & parsing middlewares
 app.use(helmet());
 app.use(cors({
-  origin: "https://spiritualgyan.info",            // adjust to specific origin or list in production
+  origin: process.env.CLIENT_URL,            // adjust to specific origin or list in production
   credentials: true
 }));
 app.use(morgan('combined'));
