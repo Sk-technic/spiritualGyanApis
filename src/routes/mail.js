@@ -34,7 +34,8 @@ router.post('/send', async (req, res, next) => {
 
 router.get('/health',(req,res)=>{
 res.status(200).json({
-    message:"ok api is running"
+    message:"ok api is running",
+    success:true
 })
 })
 
