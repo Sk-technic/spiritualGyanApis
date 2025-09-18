@@ -4,6 +4,7 @@ const helmet = require('helmet');
 const cors = require('cors');
 const morgan = require('morgan');
 const cookieParser = require('cookie-parser');
+const path = require('path');
 
 const mailRoutes = require('./src/routes/mail.js');
 const { globalLimiter } = require('./src/middlewares/rateLimiter');
@@ -28,11 +29,13 @@ app.use(cors({
   methods: ["GET", "POST", "PUT", "DELETE"],
   credentials: false,
 }));
+// app.use(cors())
 app.use(morgan('combined'));
 app.use(express.json({ limit: '10kb' }));
 app.use(express.urlencoded({ extended: true, limit: '10kb' }));
 app.use(cookieParser());
 app.set('trust proxy', 1);
+app.use('/public',express.static(path.join(__dirname, 'public')));
 
 // Global rate limit
 app.use(globalLimiter);
